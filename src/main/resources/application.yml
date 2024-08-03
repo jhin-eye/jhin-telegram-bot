@@ -4,9 +4,11 @@ server:
 spring:
   profiles:
     active: local
+  jackson:
+    time-zone: UTC
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/test
+    url: jdbc:postgresql://localhost:5432/test?serverTimezone=UTC
     platform: postgres
     username: yanoos
     password: yanoos
@@ -36,3 +38,7 @@ jwt:
   secret-key: temp-secret-key
   access-token-expiration-time: 900000 #60*15*1000
   refresh-token-expiration-time: 259200000 #60*60*24*3*1000
+
+telegram:
+  token: 7229213895:AAEqBBtp0s1wX2dn7nmuarurePlhDRo-U-I
+  authentication-uuid-expiration-time: 300000

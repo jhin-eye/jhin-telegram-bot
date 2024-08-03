@@ -65,6 +65,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.telegram/telegrambots
 	implementation 'org.telegram:telegrambots:6.0.1'
 
+	// JAXB dependencies 추가
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	implementation 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+	implementation 'com.sun.xml.bind:jaxb-impl:2.3.2'
+	implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
+
 }
 
 tasks.named('test') {
