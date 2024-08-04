@@ -2,26 +2,32 @@ package com.yanoos.global.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yanoos.global.kafka.dto.NewPostIn;
+import com.yanoos.global.kafka.dto.KafkaMessageIn;
+import com.yanoos.member.entity.Member;
+import com.yanoos.member.entity_service.member.MemberEntityService;
 import com.yanoos.telegram_bot.Bot;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class KafkaConsumer {
     private final Bot bot;
-    @KafkaListener(topics = "SEND_TELEGRAM", groupId = "${spring.kafka.consumer.group-id}")
-    public void consume(String message) throws JsonProcessingException {
+    private final MemberEntityService memberEntityService;
+    @KafkaListener(topics = "FIND_KEYWORD_POST", groupId = "${spring.kafka.consumer.group-id}")
+    public void consume(String message) throws JsonProcessingException, TelegramApiException {
         log.info("Consumed message: {}",message);
         //1. 메시지에 맞는 DTO 형식 작성 -> {"val":"{\"post_id\": 576, \"board_name_eng\": \"geumriver_notice\", \"board_name_kor\": \"금강유역환경청-공지사항\", \"post_no\": \"1562\", \"post_title\": \"2024년 금강사랑 그림 그리기 대회 수상자 알림\", \"post_url\": \"https://www.me.go.kr/gg/web/index.do?menuId=2284\", \"post_write_date\": \"2024-05-20\"}","eventId":69,"eventTypeId":1}
         //2. 메시지를 DTO로 변환
         ObjectMapper objectMapper = new ObjectMapper();
-        NewPostIn newPostIn = objectMapper.readValue(message, NewPostIn.class);
+        KafkaMessageIn kafkaMessageIn = objectMapper.readValue(message, KafkaMessageIn.class);
         //3. 변환된 DTO를 이용해 메시지 전송
-        log.info("newPostIn: {}", newPostIn.toString());
+        log.info("newPostIn: {}", kafkaMessageIn.toString());
+        Member member = memberEntityService.getMemberByMemberId(kafkaMessageIn.getValue().getMemberId());
+        bot.sendText(member.getMapMemberTelegramUsers().get(0).getTelegramUserId(),kafkaMessageIn.getValue().toString());
     }
 }

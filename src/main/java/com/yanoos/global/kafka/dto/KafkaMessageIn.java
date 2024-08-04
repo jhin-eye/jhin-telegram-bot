@@ -8,9 +8,9 @@ import lombok.*;
 @Builder
 @Getter
 @ToString
-public class NewPostIn {
+public class KafkaMessageIn {
     @JsonProperty("value")
-    private ValNewPostIn value;
+    private ValFindKeywordPost value;
     @JsonProperty("eventId")
     private Long eventId;
     @JsonProperty("eventType")

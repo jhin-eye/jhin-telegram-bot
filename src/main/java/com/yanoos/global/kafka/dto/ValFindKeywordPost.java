@@ -1,6 +1,5 @@
 package com.yanoos.global.kafka.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -9,21 +8,23 @@ import lombok.*;
 @Builder
 @Getter
 @ToString
-public class ValNewPostIn {
-    @JsonProperty("post_id")
+public class ValFindKeywordPost {
+    @JsonProperty("postId")
     private Long postId;
-    @JsonProperty("board_name_eng")
+    @JsonProperty("boardNameEng")
     private String boardNameEng;
-    @JsonProperty("board_name_kor")
+    @JsonProperty("boardNameKor")
     private String boardNameKor;
-    @JsonProperty("post_no")
+    @JsonProperty("postNo")
     private String postNo;
-    @JsonProperty("post_title")
+    @JsonProperty("postTitle")
     private String postTitle;
-    @JsonProperty("post_url")
+    @JsonProperty("postUrl")
     private String postUrl;
-    @JsonProperty("post_write_date")
+    @JsonProperty("postWriteDate")
     private String postWriteDate;
+    @JsonProperty("memberId")
+    private Long memberId;
 
 //    @JsonCreator
 //    public ValNewPostIn(
