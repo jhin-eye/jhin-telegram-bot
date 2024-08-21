@@ -3,8 +3,12 @@ package com.yanoos.global.kafka;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yanoos.global.kafka.dto.KafkaMessageIn;
+import com.yanoos.member.entity.MapMemberPost;
 import com.yanoos.member.entity.Member;
+import com.yanoos.member.entity.Post;
+import com.yanoos.member.entity_service.member.MapMemberPostEntityService;
 import com.yanoos.member.entity_service.member.MemberEntityService;
+import com.yanoos.member.entity_service.post.PostEntityService;
 import com.yanoos.telegram_bot.Bot;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +22,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class KafkaConsumer {
     private final Bot bot;
     private final MemberEntityService memberEntityService;
+    private final PostEntityService postEntityService;
+    private final MapMemberPostEntityService mapMemberPostEntityService;
+
     @KafkaListener(topics = "FIND_KEYWORD_POST", groupId = "${spring.kafka.consumer.group-id}")
     public void consume(String message) throws JsonProcessingException, TelegramApiException {
         log.info("Consumed message: {}",message);
@@ -27,7 +34,19 @@ public class KafkaConsumer {
         KafkaMessageIn kafkaMessageIn = objectMapper.readValue(message, KafkaMessageIn.class);
         //3. 변환된 DTO를 이용해 메시지 전송
         log.info("newPostIn: {}", kafkaMessageIn.toString());
+        Post post = postEntityService.getPostByPostId(kafkaMessageIn.getValue().getPostId());
         Member member = memberEntityService.getMemberByMemberId(kafkaMessageIn.getValue().getMemberId());
-        bot.sendText(member.getMapMemberTelegramUsers().get(0).getTelegramUserId(),kafkaMessageIn.getValue().toString());
+        MapMemberPost mapMemberPost = mapMemberPostEntityService.getMapMemberPostByMemberIdAndPostId(member, post);
+        String parsedMessage = parseMessage(post,mapMemberPost);
+        bot.sendText(member.getMapMemberTelegramUsers().get(0).getTelegramUserId(),parsedMessage);
+    }
+
+    private String parseMessage(Post post,MapMemberPost mapMemberPost) {
+        return "새로운 게시글이 등록되었습니다.\n" +
+                "게시판: " + post.getBoardNameKor() + "\n" +
+                "게시글 제목: " + post.getPostTitle() + "\n" +
+                "게시글 작성일: " + post.getPostWriteDate() + "\n" +
+                "게시판 URL: " + post.getPostUrl()+ "\n"+
+                "포함 키워드: " + mapMemberPost.getKeywords();
     }
 }
