@@ -13,6 +13,8 @@ import java.util.List;
 public class KafkaMessageIn {
     @JsonProperty("value")
     private ValFindKeywordPost value;
+    @JsonProperty("parentEventId")
+    private Long parentEventId;
     @JsonProperty("eventId")
     private Long eventId;
     @JsonProperty("eventType")

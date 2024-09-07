@@ -1,12 +1,12 @@
 package com.yanoos.member.business_service.kakao;
 
+import com.yanoos.global.entity.member.Member;
+import com.yanoos.global.entity.member.MemberOAuthKakao;
 import com.yanoos.global.jwt.service.JwtTokenService;
 import com.yanoos.global.util.WebClientService;
 import com.yanoos.global.util.dto.KakaoTokenResDTO;
 import com.yanoos.member.controller.dto.KakaoUser;
 import com.yanoos.global.jwt.dto.MyJwtDTO;
-import com.yanoos.member.entity.Member;
-import com.yanoos.member.entity.MemberOAuthKakao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,7 +58,7 @@ public class KakaoLoginService {
         log.info("kakao member result = {}", memberOAuthKakao);
         //todo: jwt화
         Member member = memberOAuthKakao.getMemberOAuth().getMember();
-        Long memberId = member.getMemberId();
+        Long memberId = member.getId();
         String accessToken = jwtTokenService.generateAccessToken(memberId);
         String refreshToken = jwtTokenService.generateRefreshToken(memberId);
 

@@ -1,4 +1,4 @@
-package com.yanoos.member.entity;
+package com.yanoos.global.entity.member;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,14 +17,14 @@ public class MemberOAuth {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_oauth_id")
-    private Long memberOAuthId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @Column(name = "oauth_host", nullable = false)
-    private String oauthHost;
+    private String host;
 
     @OneToOne(mappedBy = "memberOAuth", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private MemberOAuthKakao memberOAuthKakao;

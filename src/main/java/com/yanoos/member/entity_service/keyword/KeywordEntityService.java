@@ -1,6 +1,6 @@
 package com.yanoos.member.entity_service.keyword;
 
-import com.yanoos.member.entity.Keyword;
+import com.yanoos.global.entity.member.Keyword;
 import com.yanoos.member.repository.keyword.KeywordRepository;
 import com.yanoos.member.business_service.dto.CreateKeywordIn;
 import lombok.RequiredArgsConstructor;

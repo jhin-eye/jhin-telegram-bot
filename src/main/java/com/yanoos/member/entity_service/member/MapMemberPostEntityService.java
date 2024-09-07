@@ -1,12 +1,11 @@
 package com.yanoos.member.entity_service.member;
 
-import com.yanoos.member.entity.MapMemberPost;
-import com.yanoos.member.entity.Member;
-import com.yanoos.member.entity.Post;
+import com.yanoos.global.entity.board.Post;
+import com.yanoos.global.entity.member.MapMemberPost;
+import com.yanoos.global.entity.member.Member;
 import com.yanoos.member.repository.member.MapMemberPostEntityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Service
 @RequiredArgsConstructor

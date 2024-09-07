@@ -1,9 +1,9 @@
 package com.yanoos.member.business_service.kakao;
 
+import com.yanoos.global.entity.member.Member;
+import com.yanoos.global.entity.member.MemberOAuth;
+import com.yanoos.global.entity.member.MemberOAuthKakao;
 import com.yanoos.member.controller.dto.KakaoUser;
-import com.yanoos.member.entity.Member;
-import com.yanoos.member.entity.MemberOAuth;
-import com.yanoos.member.entity.MemberOAuthKakao;
 import com.yanoos.member.repository.memberOAuthKakao.MemberOAuthKakaoRepository;
 import com.yanoos.member.repository.member_OAuth.MemberOAuthRepository;
 import com.yanoos.member.repository.member.MemberRepository;
@@ -35,14 +35,14 @@ public class KakaoMemberService {
         String kakaoUserEmail = kakaoUser.getKakaoAccount().getEmail();
 
         Member member = Member.builder()
-                .memberEmail(kakaoUserEmail)
-                .memberNickname(kakaoUserNickname)
+                .email(kakaoUserEmail)
+                .nickname(kakaoUserNickname)
                 .build();
         memberRepository.save(member);
 
         MemberOAuth memberOAuth = MemberOAuth.builder()
                 .member(member)
-                .oauthHost(KAKAO_HOST_NAME)
+                .host(KAKAO_HOST_NAME)
                 .build();
         memberOAuthRepository.save(memberOAuth);
 

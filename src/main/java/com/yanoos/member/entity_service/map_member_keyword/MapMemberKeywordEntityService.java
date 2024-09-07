@@ -1,6 +1,6 @@
 package com.yanoos.member.entity_service.map_member_keyword;
 
-import com.yanoos.member.entity.MapMemberKeyword;
+import com.yanoos.global.entity.member.MapMemberKeyword;
 import com.yanoos.member.entity_service.map_member_keyword.dto.CreateMapMemberKeywordIn;
 import com.yanoos.member.repository.map_member_keyword.MapMemberKeywordRepository;
 import lombok.RequiredArgsConstructor;

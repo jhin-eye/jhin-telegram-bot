@@ -1,11 +1,11 @@
 server:
-  port: 8766
+  port: 8080
 
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://db-postgres:5432/${POSTGRES_DB_NAME}?serverTimezone=UTC
-    platform: postgres
+    driver-class-name: org.postgresql.Driver # PostgreSQL JDBC ????? ?????.
+    url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB_NAME}?serverTimezone=UTC
+    platform: postgres # ???? ?????? ???? ?????.
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
   jpa:
@@ -30,7 +30,8 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
     consumer:
-      group-id: test
+      group-id: find_keyword_post
+      auto-offset-reset: earliest
 kakao:
   host-name: KAKAO
   client-id: ${KAKAO_CLIENT_ID}

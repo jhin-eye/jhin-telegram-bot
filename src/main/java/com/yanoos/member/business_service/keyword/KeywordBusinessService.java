@@ -1,11 +1,11 @@
 package com.yanoos.member.business_service.keyword;
 
+import com.yanoos.global.entity.member.Keyword;
+import com.yanoos.global.entity.member.MapMemberKeyword;
+import com.yanoos.global.entity.member.Member;
 import com.yanoos.member.business_service.dto.CreateKeywordIn;
 import com.yanoos.member.controller.dto.PostKeywordIn;
 import com.yanoos.member.controller.dto.PostKeywordOut;
-import com.yanoos.member.entity.Keyword;
-import com.yanoos.member.entity.MapMemberKeyword;
-import com.yanoos.member.entity.Member;
 import com.yanoos.member.entity_service.keyword.KeywordEntityService;
 import com.yanoos.member.entity_service.map_member_keyword.MapMemberKeywordEntityService;
 import com.yanoos.member.entity_service.map_member_keyword.dto.CreateMapMemberKeywordIn;

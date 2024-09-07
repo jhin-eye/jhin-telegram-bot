@@ -1,9 +1,8 @@
 package com.yanoos.member.entity_service.member;
 
+import com.yanoos.global.entity.member.Member;
 import com.yanoos.global.exception.BusinessException;
 import com.yanoos.global.exception.code.MemberErrorCode;
-import com.yanoos.member.entity.MapMemberTelegramUser;
-import com.yanoos.member.entity.Member;
 import com.yanoos.member.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,6 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor

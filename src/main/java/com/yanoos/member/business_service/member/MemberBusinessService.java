@@ -1,7 +1,7 @@
 package com.yanoos.member.business_service.member;
 
+import com.yanoos.global.entity.member.Member;
 import com.yanoos.global.util.AuthUtil;
-import com.yanoos.member.entity.Member;
 import com.yanoos.member.entity_service.map_member_telegram_user.MapMemberTelegramUserEntityService;
 import com.yanoos.member.entity_service.member.MemberEntityService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class MemberBusinessService {
         Member member = memberEntityService.getMemberByTelegramAuthenticationUuid(telegramAuthenticationUuid);
         validateRegisterTelegramUserByUuid(member);
 
-        mapMemberTelegramUserEntityService.saveMapMemberTelegramUser(member.getMemberId(),telegramUserId);
+        mapMemberTelegramUserEntityService.saveMapMemberTelegramUser(member.getId(),telegramUserId);
         member = member.cleanTelegramUuid();
         return member;
 
@@ -37,7 +37,7 @@ public class MemberBusinessService {
         if(!member.getMapMemberTelegramUsers().isEmpty()){
             throw new IllegalArgumentException("Already registered");
         }
-        long telegramUuidCreatedAtMillis = member.getTelegramUuidCreatedAt().toInstant().toEpochMilli();
+        long telegramUuidCreatedAtMillis = member.getTelegramUuidCreatedAt();
         long currentTimeMillis = System.currentTimeMillis();
         if (currentTimeMillis - telegramUuidCreatedAtMillis > TELEGRAM_UUID_EXPIRED_MILLIS) {
             throw new IllegalArgumentException("Expired");

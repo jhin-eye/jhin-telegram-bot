@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: local
+    active: prod
   jackson:
     time-zone: UTC
   datasource:
@@ -34,7 +34,7 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
     consumer:
-      group-id: test2
+      group-id: find_keyword_post
 kakao:
   host-name: KAKAO
   client-id: 6bb73a683ffd93e3ebf9512656e9267c

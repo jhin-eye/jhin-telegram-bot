@@ -1,4 +1,4 @@
-package com.yanoos.member.entity;
+package com.yanoos.global.entity.member;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

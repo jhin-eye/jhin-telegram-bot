@@ -1,8 +1,8 @@
 package com.yanoos.member.repository.member;
 
-import com.yanoos.member.entity.MapMemberPost;
-import com.yanoos.member.entity.Member;
-import com.yanoos.member.entity.Post;
+import com.yanoos.global.entity.board.Post;
+import com.yanoos.global.entity.member.MapMemberPost;
+import com.yanoos.global.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MapMemberPostEntityRepository extends JpaRepository<MapMemberPost, Long> {

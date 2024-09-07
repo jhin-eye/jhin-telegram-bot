@@ -1,4 +1,4 @@
-package com.yanoos.member.entity;
+package com.yanoos.global.entity.member;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ public class MemberOAuthKakao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_oauth_kakao_id")
-    private Long memberOAuthKakaoId;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "member_oauth_id", nullable = false, unique = true)

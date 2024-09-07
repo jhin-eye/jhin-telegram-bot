@@ -1,7 +1,7 @@
 package com.yanoos.member.entity_service.map_member_telegram_user;
 
-import com.yanoos.member.entity.MapMemberTelegramUser;
-import com.yanoos.member.entity.Member;
+import com.yanoos.global.entity.member.MapMemberTelegramUser;
+import com.yanoos.global.entity.member.Member;
 import com.yanoos.member.entity_service.member.MemberEntityService;
 import com.yanoos.member.repository.map_member_telegram_user.MapMemberTelegramUserRepository;
 import lombok.RequiredArgsConstructor;

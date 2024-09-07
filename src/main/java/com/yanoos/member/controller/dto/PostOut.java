@@ -13,13 +13,12 @@ import java.time.LocalDateTime;
 @Builder
 public class PostOut {
     private Long postId;               // post_id에 대응
-    private String boardNameEng;       // board_name_eng에 대응
-    private String boardNameKor;       // board_name_kor에 대응
+    private BoardOut board;            // board_id에 대응
     private String postNo;             // post_no에 대응
     private String postTitle;          // post_title에 대응
-    private LocalDateTime postWriteDate; // post_write_date에 대응
+    private Long postWriteDate; // post_write_date에 대응
     private String postDepartment;     // post_department에 대응
     private String postUrl;            // post_url에 대응
-    private LocalDateTime monitorTime; // monitor_time에 대응
+    private Long monitorTime; // monitor_time에 대응
 
 }

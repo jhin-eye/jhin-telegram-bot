@@ -6,7 +6,6 @@ import com.yanoos.global.util.AuthUtil;
 import com.yanoos.member.business_service.keyword.KeywordBusinessService;
 import com.yanoos.member.controller.dto.PostKeywordIn;
 import com.yanoos.member.controller.dto.PostKeywordOut;
-import com.yanoos.member.entity.MapMemberKeyword;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

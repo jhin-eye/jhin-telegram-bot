@@ -1,5 +1,6 @@
-package com.yanoos.member.entity;
+package com.yanoos.global.entity.member;
 
+import com.yanoos.global.entity.board.Post;
 import com.yanoos.member.controller.dto.MapMemberPostOut;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class MapMemberPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "map_member_post_id")
-    private Long mapMemberPostId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
@@ -41,10 +42,11 @@ public class MapMemberPost {
 
     public MapMemberPostOut toDto(){
         return MapMemberPostOut.builder()
-                .mapMemberPostId(this.mapMemberPostId)
+                .mapMemberPostId(this.id)
                 .memberOut(member.toDto())
                 .postOut(post.toDto())
                 .checked(this.checked)
+                .keywords(this.keywords)
                 .build();
     }
 
