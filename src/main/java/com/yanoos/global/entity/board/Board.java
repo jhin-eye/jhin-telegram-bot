@@ -38,6 +38,9 @@ public class Board {
     @JoinColumn(name = "board_type_id", nullable = false)
     private BoardType type;
 
+    @Column(name = "site_url", nullable = false, columnDefinition = "text")
+    private String siteUrl;
+
     public BoardOut toDto() {
         return BoardOut.builder()
                 .id(this.id)
@@ -45,6 +48,7 @@ public class Board {
                 .nameKor(this.nameKor)
                 .url(this.url)
                 .type(this.type)
+                .siteUrl(this.siteUrl)
                 .build();
     }
 }

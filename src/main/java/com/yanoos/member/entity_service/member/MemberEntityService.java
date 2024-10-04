@@ -10,6 +10,7 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -30,5 +31,9 @@ public class MemberEntityService {
     public Member getMemberByTelegramAuthenticationUuid(UUID uuid) {
         return memberRepository.findByTelegramAuthenticationUuid(uuid)
                 .orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
+    }
+
+    public List<Member> getMembersAll() {
+        return memberRepository.findAll();
     }
 }

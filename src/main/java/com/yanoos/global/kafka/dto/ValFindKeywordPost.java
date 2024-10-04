@@ -25,6 +25,8 @@ public class ValFindKeywordPost {
     private String postWriteDate;
     @JsonProperty("memberId")
     private Long memberId;
+    @JsonProperty("boardId")
+    private Long boardId;
 
 //    @JsonCreator
 //    public ValNewPostIn(
