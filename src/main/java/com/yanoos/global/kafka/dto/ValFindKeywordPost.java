@@ -27,6 +27,8 @@ public class ValFindKeywordPost {
     private Long memberId;
     @JsonProperty("boardId")
     private Long boardId;
+    @JsonProperty("crawlingStatus")
+    private String crawlingStatus;
 
 //    @JsonCreator
 //    public ValNewPostIn(

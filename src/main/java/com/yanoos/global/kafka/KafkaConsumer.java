@@ -79,10 +79,37 @@ public class KafkaConsumer {
 
     }
 
+    @KafkaListener(topics = "CRAWLING_STATUS", groupId = "${spring.kafka.consumer.group-id}")
+    public void consumeCrawlingStatus(String message) throws JsonProcessingException, TelegramApiException {
+        log.info("Consumed message: {}",message);
+        //1. 메시지에 맞는 DTO 형식 작성 -> {"val":"{\"post_id\": 576, \"board_name_eng\": \"geumriver_notice\", \"board_name_kor\": \"금강유역환경청-공지사항\", \"post_no\": \"1562\", \"post_title\": \"2024년 금강사랑 그림 그리기 대회 수상자 알림\", \"post_url\": \"https://www.me.go.kr/gg/web/index.do?menuId=2284\", \"post_write_date\": \"2024-05-20\"}","eventId":69,"eventTypeId":1}
+        //2. 메시지를 DTO로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        KafkaMessageIn kafkaMessageIn = objectMapper.readValue(message, KafkaMessageIn.class);
+        //3. 변환된 DTO를 이용해 메시지 전송
+        log.info("crawlingStatus: {}", kafkaMessageIn.toString());
+        String parsedMessage = parseMessage(kafkaMessageIn.getValue().getCrawlingStatus());
+        List<Member> members = memberEntityService.getMembersAll();
+        for(Member member : members){
+            bot.sendText(member.getMapMemberTelegramUsers().get(0).getTelegramUserId(),parsedMessage);
+        }
+
+    }
+
     private String parseMessage(Board board) {
         //epoch time to date UTC+9
 
         return "게시판 조회 실패\n" +
                 "게시판명 : " + board.getNameKor();
+    }
+
+    private String parseMessage(String crawlingStatus) {
+        //epoch time to date UTC+9
+        if(crawlingStatus.equalsIgnoreCase("START")){
+            return "크롤링 작업을 시작합니다";
+        } else if (crawlingStatus.equalsIgnoreCase("END")) {
+            return "크롤링 작업이 완료되었습니다";
+        }
+        return "크롤링작업에러";
     }
 }
