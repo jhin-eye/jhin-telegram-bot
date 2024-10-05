@@ -74,6 +74,9 @@ public class KafkaConsumer {
         String parsedMessage = parseMessage(board);
         List<Member> members = memberEntityService.getMembersAll();
         for(Member member : members){
+            if(member.getMapMemberTelegramUsers().isEmpty()){
+                continue;
+            }
             bot.sendText(member.getMapMemberTelegramUsers().get(0).getTelegramUserId(),parsedMessage);
         }
 
@@ -91,6 +94,9 @@ public class KafkaConsumer {
         String parsedMessage = parseMessage(kafkaMessageIn.getValue().getCrawlingStatus());
         List<Member> members = memberEntityService.getMembersAll();
         for(Member member : members){
+            if(member.getMapMemberTelegramUsers().isEmpty()){
+                continue;
+            }
             bot.sendText(member.getMapMemberTelegramUsers().get(0).getTelegramUserId(),parsedMessage);
         }
 
