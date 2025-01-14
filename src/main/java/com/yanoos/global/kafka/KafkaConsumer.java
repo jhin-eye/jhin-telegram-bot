@@ -50,13 +50,11 @@ public class KafkaConsumer {
 
     private String parseMessage(Post post,MapMemberPost mapMemberPost) {
         //epoch time to date UTC+9
-        Long timesecond = post.getWriteDate();
-        String date = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date (timesecond*1000));
 
         return "새로운 게시글이 등록되었습니다.\n" +
                 "게시판: " + post.getBoard().getNameKor() + "\n" +
                 "게시글 제목: " + post.getTitle() + "\n" +
-                "게시글 작성일: " + date + "\n" +
+                "게시글 작성일: " + post.getWriteDate() + "\n" +
                 "게시판 URL: " + post.getBoard().getSiteUrl()+ "\n"+
                 "포함 키워드: " + mapMemberPost.getKeywords();
     }

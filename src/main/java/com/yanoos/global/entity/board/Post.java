@@ -3,10 +3,8 @@ package com.yanoos.global.entity.board;
 import com.yanoos.global.entity.member.MapMemberPost;
 import com.yanoos.member.controller.dto.PostOut;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
+import lombok.*;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +13,9 @@ import java.util.List;
         uniqueConstraints = @UniqueConstraint(columnNames = {"board_id", "post_no", "post_title"}))
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Post {
 
     @Id
@@ -36,7 +37,7 @@ public class Post {
     private String content;
 
     @Column(name = "post_write_date")
-    private Long writeDate;
+    private ZonedDateTime writeDate;
 
     @Column(name = "post_department", nullable = false, length = 255)
     private String department;
@@ -45,10 +46,17 @@ public class Post {
     private String url;
 
     @Column(name = "monitor_time", nullable = false)
-    private Long monitorTime;
+    private ZonedDateTime monitorTime;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MapMemberPost> mapMemberPost = new ArrayList<>();
+
+    @Column(name = "method", nullable = false, columnDefinition = "text")
+    private String method;
+    @Column(name = "endpoint", nullable = false, columnDefinition = "text")
+    private String endpoint;
+    @Column(name = "parameters", nullable = false, columnDefinition = "text")
+    private String parameters;
 
     public PostOut toDto(){
         return PostOut.builder()
@@ -62,6 +70,7 @@ public class Post {
                 .monitorTime(this.monitorTime)
                 .build();
     }
+
 
     public void addMapMemberPost(MapMemberPost mapMemberPost) {
         this.mapMemberPost.add(mapMemberPost);
