@@ -104,7 +104,8 @@ public class KafkaConsumer {
         //epoch time to date UTC+9
 
         return "게시판 조회 실패\n" +
-                "게시판명 : " + board.getNameKor();
+                "게시판명 : " + board.getNameKor() +
+                "\n 마지막 조회 성공: " + board.getLastCrawledAt();
     }
 
     private String parseMessage(String crawlingStatus) {
