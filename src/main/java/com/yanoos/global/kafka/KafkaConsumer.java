@@ -14,11 +14,13 @@ import com.yanoos.member.entity_service.post.PostEntityService;
 import com.yanoos.telegram_bot.Bot;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -103,9 +105,12 @@ public class KafkaConsumer {
     private String parseMessage(Board board) {
         //epoch time to date UTC+9
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH시 mm분");
+        String formattedDate = board.getLastCrawledAt().format(formatter);
+
         return "게시판 조회 실패\n" +
                 "게시판명 : " + board.getNameKor() +
-                "\n 마지막 조회 성공: " + board.getLastCrawledAt();
+                "\n 마지막 조회 성공: " + formattedDate;
     }
 
     private String parseMessage(String crawlingStatus) {
