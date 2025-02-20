@@ -44,5 +44,5 @@ jwt:
   refresh-token-expiration-time: 259200000 #60*60*24*3*1000
 
 telegram:
-  token: 7229213895:AAEqBBtp0s1wX2dn7nmuarurePlhDRo-U-I
+  token: 8164310824:AAGCe0n7krtuUTsSzCrPXSqGfAv0oCiFhBM
   authentication-uuid-expiration-time: 300000
