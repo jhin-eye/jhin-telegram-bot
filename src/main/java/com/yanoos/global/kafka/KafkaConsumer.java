@@ -14,6 +14,7 @@ import com.yanoos.member.entity_service.post.PostEntityService;
 import com.yanoos.telegram_bot.Bot;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,9 @@ public class KafkaConsumer {
     private final MapMemberPostEntityService mapMemberPostEntityService;
     private final BoardEntityService boardEntityService;
 
+    @Value("${server.url}")
+    private String SERVER_URL;
+
     @KafkaListener(topics = "FIND_KEYWORD_POST", groupId = "${spring.kafka.consumer.group-id}")
     public void consumeFindKeywordPost(String message) throws JsonProcessingException, TelegramApiException {
         log.info("Consumed message: {}",message);
@@ -50,14 +54,14 @@ public class KafkaConsumer {
         bot.sendText(member.getMapMemberTelegramUsers().get(0).getTelegramUserId(),parsedMessage);
     }
 
-    private String parseMessage(Post post,MapMemberPost mapMemberPost) {
+    public String parseMessage(Post post, MapMemberPost mapMemberPost) {
         //epoch time to date UTC+9
 
         return "새로운 게시글이 등록되었습니다.\n" +
                 "게시판: " + post.getBoard().getNameKor() + "\n" +
                 "게시글 제목: " + post.getTitle() + "\n" +
                 "게시글 작성일: " + post.getWriteDate() + "\n" +
-                "게시판 URL: " + post.getBoard().getSiteUrl()+ "\n"+
+                "게시글 URL: " + String.format("%s/api/view/posts/%d/site",SERVER_URL,post.getId())+ "\n"+
                 "포함 키워드: " + mapMemberPost.getKeywords();
     }
 

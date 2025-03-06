@@ -1,5 +1,6 @@
 server:
   port: 8766
+  url: http://localhost:8764
 
 spring:
   datasource:
