@@ -43,6 +43,9 @@ public class Member {
     @Column(name="is_approved", nullable = false)
     private boolean isApproved;
 
+    @Column(name="is_admin", nullable = false)
+    private boolean isAdmin;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MemberOAuth> memberOAuths = new ArrayList<>();
 
