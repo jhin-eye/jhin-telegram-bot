@@ -1,7 +1,11 @@
 package com.yanoos.global.config;
 
+import com.yanoos.member.repository.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +19,16 @@ import java.util.Map;
 
 @EnableKafka
 @Configuration
+@RequiredArgsConstructor
 public class KafkaConsumerConfig {
+    private static final Logger log = LoggerFactory.getLogger(KafkaConsumerConfig.class);
     @Value("${spring.kafka.bootstrap-servers}")
     private String BOOTSTRAP_SERVERS;
 
     @Value("${spring.kafka.consumer.group-id}")
     private String CONSUMER_GROUP_ID;
+
+    private final MemberRepository memberRepository;
 
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
@@ -38,4 +46,17 @@ public class KafkaConsumerConfig {
         factory.setConsumerFactory(consumerFactory()); // 컨슈머 팩토리 설정
         return factory; // 리스너 컨테이너 팩토리 생성
     }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, String> suggestionKafkaListenerContainerFactory() {
+        int adminCount = memberRepository.countByIsAdmin(true);
+        log.info("Admin count: {}", adminCount);
+
+        ConcurrentKafkaListenerContainerFactory<String, String> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        factory.setConcurrency(adminCount);
+        return factory;
+    }
+
 }

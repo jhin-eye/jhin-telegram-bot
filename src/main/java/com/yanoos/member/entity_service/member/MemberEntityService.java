@@ -36,4 +36,8 @@ public class MemberEntityService {
     public List<Member> getMembersAll() {
         return memberRepository.findAll();
     }
+
+    public List<Member> getAdminMembers() {
+        return memberRepository.findByIsAdmin(true);
+    }
 }

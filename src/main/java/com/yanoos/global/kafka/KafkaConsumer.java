@@ -7,6 +7,7 @@ import com.yanoos.global.entity.board.Post;
 import com.yanoos.global.entity.member.MapMemberPost;
 import com.yanoos.global.entity.member.Member;
 import com.yanoos.global.kafka.dto.KafkaMessageIn;
+import com.yanoos.global.kafka.dto.SuggestionPayload;
 import com.yanoos.member.entity_service.board.BoardEntityService;
 import com.yanoos.member.entity_service.member.MapMemberPostEntityService;
 import com.yanoos.member.entity_service.member.MemberEntityService;
@@ -14,6 +15,7 @@ import com.yanoos.member.entity_service.post.PostEntityService;
 import com.yanoos.telegram_bot.Bot;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -34,7 +36,7 @@ public class KafkaConsumer {
     private final PostEntityService postEntityService;
     private final MapMemberPostEntityService mapMemberPostEntityService;
     private final BoardEntityService boardEntityService;
-
+    private final ObjectMapper objectMapper;
     @Value("${server.url}")
     private String SERVER_URL;
 
@@ -126,4 +128,43 @@ public class KafkaConsumer {
         }
         return "크롤링작업에러";
     }
+
+    @KafkaListener(
+            topics = "NEW_SUGGESTION",
+            groupId = "${spring.kafka.consumer.group-id}",
+            containerFactory = "suggestionKafkaListenerContainerFactory"
+    )
+    public void consumeSuggestionAlert(ConsumerRecord<String, String> record) throws JsonProcessingException, TelegramApiException {
+        String message = record.value();
+        log.info("Consumed suggestion message: {}", message);
+
+        SuggestionPayload suggestion = objectMapper.readValue(message, SuggestionPayload.class);
+
+        // 텔레그램 전송 대상 설정 (예: 관리자 계정 or 운영자 그룹)
+        List<Member> members = memberEntityService.getAdminMembers();
+        if (members.isEmpty()) {
+            log.warn("❗관리자 목록이 비어 있어 메시지를 처리하지 못했습니다.");
+            return;
+        }
+        log.info("current partition: {}", record.partition());
+        log.info("currentConsumeAdmin: {}", members.get(record.partition()%members.size()).getId());
+        Member currentConsumeAdmin = members.get(record.partition()%members.size());
+        String parsedMessage = parseSuggestionMessage(suggestion);
+        try {
+            bot.sendText(currentConsumeAdmin.getMapMemberTelegramUsers().get(0).getTelegramUserId(), parsedMessage);
+        } catch (TelegramApiException e) {
+            log.error("Failed to send suggestion message to member: {}", currentConsumeAdmin.getId(), e);
+        }
+    }
+
+    private String parseSuggestionMessage(SuggestionPayload payload) {
+        return "\uD83D\uDCDD 새로운 건의사항이 등록되었습니다\n\n" +
+                "🗂️건의사항 ID: " + payload.getSuggestionId() + "\n" +
+                "🧑‍💻 사용자 ID: " + payload.getMemberId() + "\n" +
+                "📌 제목: " + payload.getTitle() + "\n" +
+                "💬 내용: " + payload.getContent() + "\n" +
+                "🕐 등록 시간: " + payload.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "\n";
+    }
+
+
 }
