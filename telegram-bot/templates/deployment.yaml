@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jhineye-telegram-bot
+  labels:
+    app: jhineye-telegram-bot
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: jhineye-telegram-bot
+  template:
+    metadata:
+      labels:
+        app: jhineye-telegram-bot
+    spec:
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      containers:
+        - name: telegram-bot
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          envFrom:
+            - configMapRef:
+                name: jhineye-telegram-bot-config
+            - secretRef:
+                name: jhineye-telegram-bot-secret
+          resources:
+            requests:
+              cpu: 200m
+              memory: 125Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

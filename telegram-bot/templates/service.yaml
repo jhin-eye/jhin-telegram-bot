@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jhineye-telegram-bot
+  labels:
+    app: jhineye-telegram-bot
+spec:
+  selector:
+    app: jhineye-telegram-bot
+  ports:
+    - port: {{ .Values.backend.service.port }}
+      targetPort: {{ .Values.containerPort }}
