@@ -39,7 +39,7 @@ jobs:
           helm upgrade --install jhineye-telegram-bot ./telegram-bot \
             --namespace jhin-eye \
             --create-namespace \
-            -f helm/values.yaml \
+            -f telegram-bot/values.yaml \
             --set image.tag=${{ github.event.workflow_run.head_branch }} \
             --set secrets.postgresPassword=${{ secrets.POSTGRES_PASSWORD }} \
             --set secrets.jwtSecretKey=${{ secrets.JWT_SECRET_KEY }} \
