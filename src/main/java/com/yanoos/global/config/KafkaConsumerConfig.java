@@ -50,12 +50,13 @@ public class KafkaConsumerConfig {
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> suggestionKafkaListenerContainerFactory() {
         int adminCount = memberRepository.countByIsAdmin(true);
+        int concurrency = Math.max(adminCount, 1); // 최소 1 보장
         log.info("Admin count: {}", adminCount);
 
         ConcurrentKafkaListenerContainerFactory<String, String> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
-        factory.setConcurrency(adminCount);
+        factory.setConcurrency(concurrency);
         return factory;
     }
 
